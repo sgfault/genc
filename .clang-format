@@ -1,0 +1,52 @@
+Language: C
+BasedOnStyle: LLVM
+
+# ==================================================
+# Braces style (Allman / school style)
+# ==================================================
+BreakBeforeBraces: Allman
+
+# ==================================================
+# Indentation (4 spaces, NO tabs)
+# ==================================================
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+
+# ==================================================
+# Line length
+# ==================================================
+ColumnLimit: 80
+
+# ==================================================
+# Alignment
+# ==================================================
+AlignConsecutiveDeclarations: true
+AlignConsecutiveAssignments: false
+AlignAfterOpenBracket: Align
+
+# ==================================================
+# One-statement-per-line discipline
+# ==================================================
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+
+# ==================================================
+# Spacing rules
+# ==================================================
+PointerAlignment: Left
+SpaceBeforeParens: ControlStatements
+
+# ==================================================
+# Keep tables & initializer lists stable
+# ==================================================
+BinPackArguments: true
+BinPackParameters: true
+Cpp11BracedListStyle: true
+
+# ==================================================
+# Comments
+# ==================================================
+ReflowComments: true
+SpacesBeforeTrailingComments: 2
