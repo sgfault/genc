@@ -62,16 +62,16 @@ Current signatures are good, but consider:
 
 ### Phase 1: Foundation (Start Here)
 
-| Priority | Task | Description | Estimated Effort |
-|----------|------|-------------|------------------|
-| 1 | Argument parsing | Implement CLI argument parser (`genc <command> [args]`) | Small |
-| 2 | Basic file operations | Implement `read_file`, `write_to_file`, `create_file` | Small |
-| 3 | Project templates | Define default project structure for `genc new` | Small |
-| 4 | `genc new` command | Create new project with basic `genc.toml` template | Medium |
-| 5 | `genc init` command | Initialize `genc.toml` in existing directory | Small |
-| 6 | Basic manifest structure | Define minimal `Manifest` struct (name, version) | Small |
-| 7 | TOML parser integration | Integrate `tomlc99` or similar library | Medium |
-| 8 | Parse basic manifest | Read and parse simple `genc.toml` files | Medium |
+| Priority | Task | Description | Estimated Effort | Assignne |
+|----------|------|-------------|------------------|----------|
+| 1 | Argument parsing | Implement CLI argument parser (`genc <command> [args]`) | Small | Aymane |
+| 2 | Basic file operations | Implement `read_file`, `write_to_file`, `create_file` | Small | Aymane | 
+| 3 | Project templates | Define default project structure for `genc new` | Small | Sidati |
+| 4 | `genc new` command | Create new project with basic `genc.toml` template | Medium | Sidati |
+| 5 | `genc init` command | Initialize `genc.toml` in existing directory | Small | Ayamne |
+| 6 | Basic manifest structure | Define minimal `Manifest` struct (name, version) | Small | Sidati | 
+| 7 | TOML parser integration | Integrate `tomlc99` or similar library | Medium | Sidati |
+| 8 | Parse basic manifest | Read and parse simple `genc.toml` files | Medium | Aymane |
 
 ### Phase 2: Core Build System
 
