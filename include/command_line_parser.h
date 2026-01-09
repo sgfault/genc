@@ -2,6 +2,7 @@
 #define GENC_COMMAND_LINE_PARSER_H
 
 #include "common.h"
+#include "errors.h"
 #include <stdbool.h>
 
 #define POSITIONAL_ARGS_COUNT 10
@@ -26,6 +27,22 @@ typedef struct
     CommandFlags     flags;
 } ParsedCommand;
 
-ParsedCommand parse_command_line(int argc, char* argv[]);
+typedef enum
+{
+    RESULT_OK,
+    RESULT_ERR
+} ResultTag;
+
+typedef struct
+{
+    ResultTag tag;
+    union
+    {
+        ParsedCommand  command;
+        ErrorCollector errors;
+    } data;
+} ParseResult;
+
+ParseResult parse_command_line(int argc, char* argv[]);
 
 #endif  // !GENC_COMMAND_LINE_PARSER_H
