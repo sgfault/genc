@@ -12,6 +12,7 @@ typedef enum
     ERROR_INVALID_NAME,
     ERROR_TOO_MANY_ARGS,
     ERROR_MISSING_REQUIRED_ARG,
+    ERROR_FLAGS_NOT_ALLOWED,
 } ParserErrorType;
 
 typedef struct

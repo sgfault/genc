@@ -5,6 +5,37 @@
 #include <stdlib.h>
 #include <string.h>
 
+typedef struct
+{
+    CommandType cmd;
+    bool        allow_verbose;
+    bool        allow_debug;
+    bool        allow_release;
+} CommandFlagRules;
+
+static const CommandFlagRules ALLOWED_RULES[] = {
+    {COMMAND_TYPE_BUILD, true, true, true},
+    {COMMAND_TYPE_INIT, false, false, false},
+    {COMMAND_TYPE_NEW, false, false, false},
+};
+
+static bool is_flag_allowed(CommandType cmd, const char* flag_name)
+{
+    for (size_t i = 0; i < sizeof(ALLOWED_RULES) / sizeof(ALLOWED_RULES[0]); i++)
+    {
+        if (ALLOWED_RULES[i].cmd == cmd)
+        {
+            if (!strcmp(flag_name, "verbose"))
+                return ALLOWED_RULES[i].allow_verbose;
+            if (!strcmp(flag_name, "debug"))
+                return ALLOWED_RULES[i].allow_debug;
+            if (!strcmp(flag_name, "release"))
+                return ALLOWED_RULES[i].allow_release;
+        }
+    }
+    return false;
+}
+
 static CommandType resolve_command_type(const char* command)
 {
     if (!strcmp(command, "init"))
@@ -39,9 +70,9 @@ ParseResult parse_command_line(int argc, char* argv[])
     }
 
     char*       command = argv[1];
-    CommandType type = resolve_command_type(command);
+    CommandType command_type = resolve_command_type(command);
 
-    if (type == COMMAND_TYPE_UNKNOWN)
+    if (command_type == COMMAND_TYPE_UNKNOWN)
     {
         add_error(&errors, ERROR_UNKNOWN_COMMAND, "Unknown command.", command);
     }
@@ -58,11 +89,26 @@ ParseResult parse_command_line(int argc, char* argv[])
         if ('-' == arg[0])
         {
             if (matches_flag(arg, "--verbose", "-v"))
-                flags.verbose = true;
+            {
+                if (!is_flag_allowed(command_type, "verbose"))
+                    add_error(&errors, ERROR_FLAGS_NOT_ALLOWED, "flag not allowed for this command", arg);
+                else
+                    flags.verbose = true;
+            }
             else if (matches_flag(arg, "--release", "-r"))
-                flags.release = true;
+            {
+                if (!is_flag_allowed(command_type, "release"))
+                    add_error(&errors, ERROR_FLAGS_NOT_ALLOWED, "flag not allowed for this command", arg);
+                else
+                    flags.release = true;
+            }
             else if (matches_flag(arg, "--debug", "-d"))
-                flags.debug = true;
+            {
+                if (!is_flag_allowed(command_type, "debug"))
+                    add_error(&errors, ERROR_FLAGS_NOT_ALLOWED, "flag not allowed for this command", arg);
+                else
+                    flags.debug = true;
+            }
             else
                 add_error(&errors, ERROR_UNKNOWN_FLAG, "Unknown flag.", arg);
         }
@@ -76,6 +122,14 @@ ParseResult parse_command_line(int argc, char* argv[])
         i++;
     }
 
+    // NOTE: here we will add commands specific validations
+    if (command_type == COMMAND_TYPE_NEW)
+    {
+        if (positional_args_count < 1)
+            add_error(&errors, ERROR_MISSING_REQUIRED_ARG, "project name not specified", command);
+        // TODO: validate project name and so on
+    }
+
     if (errors.count > 0)
     {
         ParseResult result;
@@ -86,7 +140,7 @@ ParseResult parse_command_line(int argc, char* argv[])
 
     ParseResult result;
     result.tag = RESULT_OK;
-    result.data.command.type = type;
+    result.data.command.type = command_type;
     result.data.command.flags = flags;
     for (size_t i = 0; i < positional_args_count; i++)
     {
