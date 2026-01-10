@@ -65,8 +65,10 @@ ParseResult parse_command_line(int argc, char* argv[])
 
     if (matches_flag(argv[1], "--help", "-h"))
     {
-        printf("Show help later, for now god help you. :Joy\n");
-        exit(0);
+        ParseResult result;
+        result.tag = RESULT_OK;
+        result.data.command.type = COMMAND_TYPE_HELP;
+        return result;
     }
 
     char*       command = argv[1];
