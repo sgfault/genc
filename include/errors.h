@@ -8,39 +8,25 @@
 
 typedef enum
 {
-    ERROR_TYPE_PARSER,
-    ERROR_TYPE_FILESYSTEM,
+    PARSE_ERR_UNKNOWN_FLAG,
+    PARSE_ERR_UNKNOWN_COMMAND,
+    PARSE_ERR_INVALID_NAME,
+    PARSE_ERR_TOO_MANY_ARGS,
+    PARSE_ERR_MISSING_REQUIRED_ARG,
+    PARSE_ERR_FLAGS_NOT_ALLOWED,
+
+    FS_ERR_CANNOT_CREATE_DIR,
+    FS_ERR_CANNOT_WALK_DIR,
+    FS_ERR_CANNOT_OPEN_FILE,
+    FS_ERR_CANNOT_READ_FILE,
+    FS_ERR_CANNOT_WRITE_TO_FILE,
 } ErrorType;
-
-typedef enum
-{
-    ERROR_UNKNOWN_FLAG,
-    ERROR_UNKNOWN_COMMAND,
-    ERROR_INVALID_NAME,
-    ERROR_TOO_MANY_ARGS,
-    ERROR_MISSING_REQUIRED_ARG,
-    ERROR_FLAGS_NOT_ALLOWED,
-} ParserErrorType;
-
-typedef enum
-{
-    FS_ERROR_CANNOT_CREATE_DIR,
-    FS_ERROR_CANNOT_WALK_DIR,
-    FS_ERROR_CANNOT_OPEN_FILE,
-    FS_ERROR_CANNOT_READ_FILE,
-    FS_ERROR_CANNOT_WRITE_TO_FILE,
-} FileSystemErrorType;
 
 typedef struct
 {
     ErrorType type;
-    union
-    {
-        ParserErrorType     parser;
-        FileSystemErrorType fs;
-    } subtype;
-    char* message;
-    char* context;
+    char*     message;
+    char*     context;
 } Error;
 
 typedef struct
@@ -49,7 +35,7 @@ typedef struct
     size_t count;
 } ErrorCollector;
 
-void add_error(ErrorCollector* collector, ErrorType type, void* subtype, const char* message, const char* context);
+void add_error(ErrorCollector* collector, ErrorType type, const char* message, const char* context);
 void report_and_exit(ErrorCollector* collector);
 
 #endif  // !GENC_ERRORS_H

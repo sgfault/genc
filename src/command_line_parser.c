@@ -55,12 +55,11 @@ static inline bool matches_flag(const char* arg, const char* long_flag, const ch
 
 ParseResult parse_command_line(int argc, char* argv[])
 {
-    ErrorCollector  errors = {0};
-    ParserErrorType parserError;
+    ErrorCollector errors = {0};
 
     if (argc <= 1)
     {
-        add_error(&errors, ERROR_TYPE_PARSER, &(ParserErrorType){ERROR_MISSING_REQUIRED_ARG}, "No command provided.", "");
+        add_error(&errors, PARSE_ERR_MISSING_REQUIRED_ARG, "No command provided.", "");
         report_and_exit(&errors);
     }
 
@@ -76,7 +75,7 @@ ParseResult parse_command_line(int argc, char* argv[])
     CommandType command_type = resolve_command_type(command);
 
     if (command_type == COMMAND_TYPE_UNKNOWN)
-        add_error(&errors, ERROR_TYPE_PARSER, &(ParserErrorType){ERROR_UNKNOWN_COMMAND}, "Unknown command.", command);
+        add_error(&errors, PARSE_ERR_UNKNOWN_COMMAND, "Unknown command.", command);
 
     CommandFlags flags = {false, false, false};
     char*        positional_args_items[POSITIONAL_ARGS_COUNT];
@@ -92,7 +91,7 @@ ParseResult parse_command_line(int argc, char* argv[])
             if (matches_flag(arg, "--verbose", "-v"))
             {
                 if (!is_flag_allowed(command_type, "verbose"))
-                    add_error(&errors, ERROR_TYPE_PARSER, &(ParserErrorType){ERROR_FLAGS_NOT_ALLOWED}, "flag not allowed for this command", arg);
+                    add_error(&errors, PARSE_ERR_FLAGS_NOT_ALLOWED, "flag not allowed for this command", arg);
                 else
                     flags.verbose = true;
             }
@@ -100,7 +99,7 @@ ParseResult parse_command_line(int argc, char* argv[])
             {
                 if (!is_flag_allowed(command_type, "release"))
                 {
-                    add_error(&errors, ERROR_TYPE_PARSER, &(ParserErrorType){ERROR_FLAGS_NOT_ALLOWED}, "flag not allowed for this command", arg);
+                    add_error(&errors, PARSE_ERR_FLAGS_NOT_ALLOWED, "flag not allowed for this command", arg);
                 }
                 else
                     flags.release = true;
@@ -108,17 +107,17 @@ ParseResult parse_command_line(int argc, char* argv[])
             else if (matches_flag(arg, "--debug", "-d"))
             {
                 if (!is_flag_allowed(command_type, "debug"))
-                    add_error(&errors, ERROR_TYPE_PARSER, &(ParserErrorType){ERROR_FLAGS_NOT_ALLOWED}, "flag not allowed for this command", arg);
+                    add_error(&errors, PARSE_ERR_FLAGS_NOT_ALLOWED, "flag not allowed for this command", arg);
                 else
                     flags.debug = true;
             }
             else
-                add_error(&errors, ERROR_TYPE_PARSER, &(ParserErrorType){ERROR_UNKNOWN_FLAG}, "Unknown flag.", arg);
+                add_error(&errors, PARSE_ERR_UNKNOWN_FLAG, "Unknown flag.", arg);
         }
         else
         {
             if (positional_args_count >= POSITIONAL_ARGS_COUNT)
-                add_error(&errors, ERROR_TYPE_PARSER, &(ParserErrorType){ERROR_TOO_MANY_ARGS}, "too many arguments.", arg);
+                add_error(&errors, PARSE_ERR_TOO_MANY_ARGS, "too many arguments.", arg);
             else
                 positional_args_items[positional_args_count++] = arg;
         }
@@ -129,7 +128,7 @@ ParseResult parse_command_line(int argc, char* argv[])
     if (command_type == COMMAND_TYPE_NEW)
     {
         if (positional_args_count < 1)
-            add_error(&errors, ERROR_TYPE_PARSER, &(ParserErrorType){ERROR_MISSING_REQUIRED_ARG}, "project name not specified", command);
+            add_error(&errors, PARSE_ERR_MISSING_REQUIRED_ARG, "project name not specified", command);
         // TODO: validate project name and so on
     }
 
