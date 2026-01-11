@@ -27,6 +27,7 @@ void write_to_file(ErrorCollector errors, const char* path, const char* content)
     {
         add_error(&errors, ERROR_TYPE_FILESYSTEM, &(FileSystemErrorType){FS_ERROR_CANNOT_WRITE_TO_FILE}, "Failed to write to file", path);
         report_and_exit(&errors);
+        fclose(f);
     }
     fclose(f);
 }
