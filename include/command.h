@@ -15,7 +15,6 @@ typedef struct
 
 } CommandResult;
 
-typedef CommandResult (*CommandFunction)();  // this params could be update cuz we don't know how this will be
-
+typedef CommandResult (*CommandFunction)();  // this params could be updated cuz we don't know how this will be
 
 #endif  // !GENC_COMMAND_H

@@ -2,37 +2,34 @@
 #include "../include/command.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-void add_error(ErrorCollector* collector, ParserErrorType type, const char* message, const char* context)
+// NOTE: This header has been modified to globalize error handling throughout the binary
+void add_error(ErrorCollector* collector, ErrorType type, void* subtype, const char* message, const char* context)
 {
-    if (collector->count >= MAX_PARSE_ERRORS)
+    if (collector->count >= MAX_ERRORS)
         return;
-
-    ParseError* error = &collector->errors[collector->count++];
+    Error* error = &collector->errors[collector->count++];
     error->type = type;
-    error->message = (char*)message;
-    error->context = (char*)context;
+    switch (type)
+    {
+    case ERROR_TYPE_PARSER:
+        error->subtype.parser = *(ParserErrorType*)subtype;
+        break;
+    case ERROR_TYPE_FILESYSTEM:
+        error->subtype.fs = *(FileSystemErrorType*)subtype;
+        break;
+    }
+    error->message = strdup(message);
+    error->context = context ? strdup(context) : NULL;
 }
 
 void report_and_exit(ErrorCollector* collector)
 {
-    fprintf(stderr, "\nFound %zu errors: \n\n", collector->count);
-    for (size_t i = 0; i < collector->count; i++)
+    for (size_t i = 0; i < collector->count; ++i)
     {
-        ParseError* error = &collector->errors[i];
-
-        fprintf(stderr, " Error: %s", error->message);
-        if (error->context && error->context[0] != '\0')
-            fprintf(stderr, " '%s'", error->context);
-        fprintf(stderr, "\n");
-
-        if (error->type == ERROR_UNKNOWN_FLAG)
-            fprintf(stderr, "     Use 'genc --help' to see available flags\n");
-        else if (error->type == ERROR_UNKNOWN_COMMAND)
-            fprintf(stderr, "     Use 'genc --help' to see available commands\n");
-        else if (error->type == ERROR_MISSING_REQUIRED_ARG)
-            fprintf(stderr, "     Use 'genc new <project name>'\n");
+        Error* error = &collector->errors[i];
+        fprintf(stderr, "[ERROR] %s: %s\n", error->message, error->context ? error->context : "");
     }
-    fprintf(stderr, "\n");
     exit(1);
 }
