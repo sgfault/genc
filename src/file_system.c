@@ -9,7 +9,6 @@ void create_dir(ErrorCollector errors, const char* path)
 
     if (mkdir(path, 0755) && errno != EEXIST)
     {
-        // fprintf(stderr, "Failed to create directory %s: %s\n", path, strerror(errno));
         add_error(&errors, ERROR_TYPE_FILESYSTEM, &(FileSystemErrorType){FS_ERROR_CANNOT_CREATE_DIR}, "Failed to create directory", path);
         report_and_exit(&errors);
     }
