@@ -1,6 +1,6 @@
 #include <stdbool.h>
 #include <stdio.h>
-#include <string.h>
+// #include <string.h>
 
 #include "../include/command_line_parser.h"
 
