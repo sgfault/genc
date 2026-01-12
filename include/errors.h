@@ -20,6 +20,7 @@ typedef enum
     FS_ERR_CANNOT_OPEN_FILE,
     FS_ERR_CANNOT_READ_FILE,
     FS_ERR_CANNOT_WRITE_TO_FILE,
+    FS_ERR_CANNOT_CREATE_FILE,
 } ErrorType;
 
 typedef struct
