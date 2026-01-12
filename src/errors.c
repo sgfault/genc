@@ -1,10 +1,10 @@
+#define _POSIX_C_SOURCE 200809L
 #include "../include/errors.h"
 #include "../include/command.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-// NOTE: This header has been modified to globalize error handling throughout the binary
 void add_error(ErrorCollector* collector, ErrorType type, const char* message, const char* context)
 {
     if (collector->count >= MAX_ERRORS)
