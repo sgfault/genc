@@ -21,7 +21,6 @@ const char* gitignore_template =
 const char* genc_toml_template =
     "[package]\n"
     "name = \"{{project_name}}\"\n"
-    "author = \"{{project_author}}\"\n"
     "version = \"0.1.0\"\n"
     "edition = \"2026\"\n"
     "compliler = \"gcc\" # use g++ or your compliler of choice\n"
@@ -29,7 +28,7 @@ const char* genc_toml_template =
     "[build]\n"
     "src = \"src/main.c\"\n"
     "include = \"include/\"\n"
-    "target = \"target/\"\n"
+    "bin = \"bin/\"\n"
     "\n"
     "[dependencies]\n"
     "# library_name = { url = \"segfault/genc\", version = \"*\" }\n"

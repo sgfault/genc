@@ -1,6 +1,7 @@
 #include "../include/command_new.h"
 #include "../include/errors.h"
 #include "../include/file_system.h"
+#include "../include/logger.h"
 #include "../include/templates.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -47,9 +48,9 @@ char* replace_placeholder(const char* template, const char* attribute, const cha
 /**
  * @Author: sidati NOUHI
  * @Date: 12/01/2026
- * @Does: Initializes the project with the standard directories src/ include/ and files (formatter, main, readme, gitignore and genc.toml).
+ * Initializes the project with the standard directories src/ include/ and files (formatter, main, readme, gitignore and genc.toml).
  */
-void init_project(ErrorCollector errorsCollector, const char* name)
+void init_project(ErrorCollector* errorsCollector, const char* name)
 {
     create_dir(errorsCollector, name);
     char path[256];
@@ -87,4 +88,6 @@ void init_project(ErrorCollector errorsCollector, const char* name)
     char* formatter = replace_placeholder(genc_clang_format_template, name, "{{project_name}}");
     write_to_file(errorsCollector, path, formatter);
     free(formatter);
+
+    LOG_INFO("Project %s created successfully.", name);
 }

@@ -1,38 +1,10 @@
 #include "../include/file_system.h"
 #include "../include/errors.h"
-#include <errno.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-
-void create_dir(ErrorCollector* errors, const char* path)
-{
-
-    if (mkdir(path, 0755) && errno != EEXIST)
-    {
-        add_error(errors, FS_ERR_CANNOT_CREATE_DIR, "Failed to create directory", path);
-        report_and_exit(errors);
-    }
-}
-
-void write_to_file(ErrorCollector* errors, const char* path, const char* content)
-{
-    FILE* file_descriptor = fopen(path, "w");
-    if (!file_descriptor)
-    {
-        add_error(errors, FS_ERR_CANNOT_OPEN_FILE, "Failed to open file", path);
-        report_and_exit(errors);
-    }
-    if (fputs(content, file_descriptor) != 0)
-    {
-        add_error(errors, FS_ERR_CANNOT_WRITE_TO_FILE, "Failed to write to file", path);
-        fclose(file_descriptor);
-        report_and_exit(errors);
-    }
-    fclose(file_descriptor);
-}
 
 File read_file(ErrorCollector* errors, const char* path)
 {
@@ -105,7 +77,7 @@ void create_dir(ErrorCollector* errors, const char* path)
     if (dir_exists(path))
         return;
 
-    if (mkdir(path, 0755) != -1)
+    if (mkdir(path, 0755) != 0)
     {
         add_error(errors, FS_ERR_CANNOT_CREATE_DIR, "Failed to create directory", path);
         report_and_exit(errors);

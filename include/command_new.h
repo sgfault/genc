@@ -1,10 +1,15 @@
 #ifndef GENC_COMMAND_NEW_H
 #define GENC_COMMAND_NEW_H
 
+#include "command.h"
 #include "common.h"
 #include "errors.h"
 
-CommandResult command_new();
+inline CommandResult command_new()
+{
+    CommandResult result;
+    return result;
+}
 
 /**
  * Initialize a project

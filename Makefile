@@ -1,9 +1,9 @@
 CC = gcc
-CFLAGS = -std=c99 -Wall -Wextra -g
+CFLAGS = -std=c99 -Wextra -g -Wall
 CTEST_FLAGS = -std=c99
 LDFLAGS = -lcriterion
 
-SOURCES = src/command_line_parser.c src/errors.c src/file_system.c src/command_new.c src/templates.c
+SOURCES = src/command_line_parser.c src/errors.c src/file_system.c src/command_new.c src/templates.c src/logger.c
 TEST_SOURCES = tests/command_line_parser_test.c 
 
 all: genc

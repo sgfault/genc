@@ -12,8 +12,8 @@ typedef uint64_t u64;
 
 typedef struct
 {
-    char* chars;
-    size_t  length;
+    char*  chars;
+    size_t length;
 } Str;
 
 Str new_string(const char* chars);
