@@ -1,9 +1,11 @@
 #define _POSIX_C_SOURCE 200809L
 #include "../include/errors.h"
-#include "../include/command.h"
+#include "../include/logger.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+ErrorCollector collector = {0};
 
 void add_error(ErrorCollector* collector, ErrorType type, const char* message, const char* context)
 {
@@ -20,7 +22,7 @@ void report_and_exit(ErrorCollector* collector)
     for (size_t i = 0; i < collector->count; ++i)
     {
         Error* error = &collector->errors[i];
-        fprintf(stderr, "[ERROR] %s: %s\n", error->message, error->context ? error->context : "");
+        LOG_ERROR("%s: %s\n", error->message, error->context ? error->context : "");
     }
     exit(1);
 }

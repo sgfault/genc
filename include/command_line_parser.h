@@ -44,8 +44,8 @@ typedef struct
     ResultTag tag;
     union
     {
-        ParsedCommand  command;  // Valid when tag == RESULT_OK
-        ErrorCollector errors;   // Valid when tag == RESULT_ERR
+        ParsedCommand   command;  // Valid when tag == RESULT_OK
+        ErrorCollector* errors;   // Valid when tag == RESULT_ERR
     } data;
 } ParseResult;
 
@@ -55,6 +55,6 @@ typedef struct
  * @param argv: argument vector from main
  * @return ParseResult with either parsed command or errors
  */
-ParseResult parse_command_line(int argc, char* argv[]);
+ParseResult parse_command_line(ErrorCollector* errors, int argc, char* argv[]);
 
 #endif  // !GENC_COMMAND_LINE_PARSER_H

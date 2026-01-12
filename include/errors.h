@@ -40,6 +40,9 @@ typedef struct
     size_t count;
 } ErrorCollector;
 
+/* Initializing a global collector accross the application */
+extern ErrorCollector collector;
+
 /**
  * Add an error to the collector
  * @param collector: error collector to add to
