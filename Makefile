@@ -3,7 +3,7 @@ CFLAGS = -std=c99 -Wall -Wextra -g
 CTEST_FLAGS = -std=c99
 LDFLAGS = -lcriterion
 
-SOURCES = src/command_line_parser.c src/errors.c
+SOURCES = src/command_line_parser.c src/errors.c src/file_system.c
 TEST_SOURCES = tests/command_line_parser_test.c 
 
 all: genc

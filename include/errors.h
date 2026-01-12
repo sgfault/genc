@@ -3,53 +3,56 @@
 
 #include "common.h"
 
-// NOTE: This header has been modified to globalize error handling throughout the binary
 #define MAX_ERRORS 20
 
+/* All error types */
 typedef enum
 {
-    ERROR_TYPE_PARSER,
-    ERROR_TYPE_FILESYSTEM,
+    // Command line parsing errors
+    PARSE_ERR_UNKNOWN_FLAG,
+    PARSE_ERR_UNKNOWN_COMMAND,
+    PARSE_ERR_INVALID_NAME,
+    PARSE_ERR_TOO_MANY_ARGS,
+    PARSE_ERR_MISSING_REQUIRED_ARG,
+    PARSE_ERR_FLAGS_NOT_ALLOWED,
+
+    // File system operation errors
+    FS_ERR_CANNOT_CREATE_DIR,
+    FS_ERR_CANNOT_WALK_DIR,
+    FS_ERR_CANNOT_OPEN_FILE,
+    FS_ERR_CANNOT_READ_FILE,
+    FS_ERR_CANNOT_WRITE_TO_FILE,
+    FS_ERR_CANNOT_CREATE_FILE,
 } ErrorType;
 
-typedef enum
-{
-    ERROR_UNKNOWN_FLAG,
-    ERROR_UNKNOWN_COMMAND,
-    ERROR_INVALID_NAME,
-    ERROR_TOO_MANY_ARGS,
-    ERROR_MISSING_REQUIRED_ARG,
-    ERROR_FLAGS_NOT_ALLOWED,
-} ParserErrorType;
-
-typedef enum
-{
-    FS_ERROR_CANNOT_CREATE_DIR,
-    FS_ERROR_CANNOT_WALK_DIR,
-    FS_ERROR_CANNOT_OPEN_FILE,
-    FS_ERROR_CANNOT_READ_FILE,
-    FS_ERROR_CANNOT_WRITE_TO_FILE,
-} FileSystemErrorType;
-
+/* Single error with type, message, and optional context */
 typedef struct
 {
-    ErrorType type;
-    union
-    {
-        ParserErrorType     parser;
-        FileSystemErrorType fs;
-    } subtype;
-    char* message;
-    char* context;
+    ErrorType type;     // Type of error
+    char*     message;  // What went wrong
+    char*     context;  // Additional info (file path, flag name, etc) - Nullable
 } Error;
 
+/* Collects multiple errors to report them all at once */
 typedef struct
 {
     Error  errors[MAX_ERRORS];
     size_t count;
 } ErrorCollector;
 
-void add_error(ErrorCollector* collector, ErrorType type, void* subtype, const char* message, const char* context);
+/**
+ * Add an error to the collector
+ * @param collector: error collector to add to
+ * @param type: type of error
+ * @param message: error message
+ * @param context: additional context (can be NULL or empty string)
+ */
+void add_error(ErrorCollector* collector, ErrorType type, const char* message, const char* context);
+
+/**
+ * Print all collected errors to stderr and exit with code 1
+ * @param collector: error collector with errors to report
+ */
 void report_and_exit(ErrorCollector* collector);
 
 #endif  // !GENC_ERRORS_H
