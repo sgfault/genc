@@ -3,16 +3,51 @@
 
 #include "../include/errors.h"
 
+/* Represents a file read into memory */
 typedef struct
 {
     char*  buffer;
     size_t length;
 } File;
 
+/**
+ * Read entire file into memory
+ * @param errors: error collector
+ * @param path: path to file
+ * @return File struct with buffer and length
+ */
 File read_file(ErrorCollector* errors, const char* path);
+
+/**
+ * Create an empty file
+ * @param errors: error collector
+ * @param path: path to file to create
+ */
 void create_file(ErrorCollector* errors, const char* path);
+
+/**
+ * Write content to a file (overwrites if exists)
+ * @param errors: error collector
+ * @param path: path to file
+ * @param content: content to write
+ */
 void write_to_file(ErrorCollector* errors, const char* path, const char* content);
+
+/**
+ * Create a directory (does nothing if already exists)
+ * @param errors: error collector
+ * @param name: directory path to create
+ */
 void create_dir(ErrorCollector* errors, const char* name);
+
+/**
+ * Walk through a directory recursively
+ * NOTE: Not implemented yet
+ * we will use this to execute a call back for recursively on each entry we found
+ *
+ * @param errors: error collector
+ * @param path: directory path to walk
+ */
 void walk_dir(ErrorCollector* errors, char* path);
 
 #endif  // !GENC_FILE_SYSTEM_H
