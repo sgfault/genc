@@ -1,3 +1,4 @@
+#include "../include/command_new.h"
 #include "../include/errors.h"
 #include "../include/file_system.h"
 #include "../include/templates.h"

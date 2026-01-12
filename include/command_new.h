@@ -8,6 +8,6 @@ CommandResult command_new();
 
 void init_project(ErrorCollector* errorCollector, const char* name);
 
-char* replace_project_name(const char* _template, const char* project_name);
+char* replace_placeholder(const char* _template, const char* attribute, const char* placeholder);
 
 #endif  // !GENC_COMMAND_NEW_H

@@ -14,22 +14,22 @@ int main(int argc, char* argv[])
 
     switch (parsing_result.data.command.type)
     {
+    case COMMAND_TYPE_NEW:
+        init_project(&errors, parsing_result.data.command.positional_params.args[2]);
+        break;
     case COMMAND_TYPE_BUILD:
         printf("Build command passed\n");
-        // init_project(errors, parsing_result.data.command.positional_params.args) break;
         break;
     case COMMAND_TYPE_INIT:
-        break;
-    case COMMAND_TYPE_NEW:
-
+        printf("Init command passed\n");
         break;
     case COMMAND_TYPE_HELP:
+        printf("Help command passed\n");
         break;
     case COMMAND_TYPE_UNKNOWN:
+        printf("Unknown command passed\n");
         break;
     }
-
-    printf("i think it's wokring mf \n");
 
     return 0;
 }
