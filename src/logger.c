@@ -23,6 +23,7 @@ void log_set_level(LogLevel level)
 
 /**
  * @brief Set the log output file.
+ * @param file to set as the log file
  */
 void log_set_file(FILE* file)
 {
@@ -43,7 +44,7 @@ void log_message(LogLevel level, const char* fmt, ...)
     /*  time_t     now = time(NULL);
      *  struct tm* t = localtime(&now);
      *  char       timebuf[20];
-     *  strftime(timebuf, sizeof(timebuf), "%Y-%m-%d %H:%M:%S", t);
+     *  strftime(timebuf, sizeof(timebuf), "%Y-%d-%d %H:%M:%S", t);
      */
 
     fprintf(

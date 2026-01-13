@@ -18,22 +18,25 @@ typedef enum
 /**
  * @brief Set the minimum log level to output.
  * Messages below this level will be ignored.
- * @param level The minimum LogLevel to display.
+ * @param level: The minimum LogLevel to display.
+ * @return void
  */
 void log_set_level(LogLevel level);
 
 /**
  * @brief Set the log output file.
  * By default, logs go to stdout/stderr. Pass NULL to reset to default.
- * @param file Pointer to FILE (e.g., fopen("log.txt", "a")).
+ * @param file: Pointer to FILE (e.g., fopen("log.txt", "a")).
+ * @return void
  */
 void log_set_file(FILE* file);
 
 /**
  * @brief Log a formatted message with a given log level.
- * @param level The LogLevel for the message.
- * @param fmt printf-style format string.
- * @param ... Arguments for the format string.
+ * @param level: The LogLevel for the message.
+ * @param fmt: printf-style format string.
+ * @param ...: Arguments for the format string.
+ * @return void
  */
 void log_message(LogLevel level, const char* fmt, ...);
 
