@@ -23,6 +23,13 @@ typedef enum
     FS_ERR_CANNOT_READ_FILE,
     FS_ERR_CANNOT_WRITE_TO_FILE,
     FS_ERR_CANNOT_CREATE_FILE,
+
+    // Manifest parsing and validation errors
+    MANIFEST_OK = 0,
+    MANIFEST_ERR_FILE_NOT_FOUND,
+    MANIFEST_ERR_PARSE_FAILED,
+    MANIFEST_ERR_INVALID_FORMAT,
+    MANIFEST_ERR_MEMORY
 } ErrorType;
 
 /* Single error with type, message, and optional context */
