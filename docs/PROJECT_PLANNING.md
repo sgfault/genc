@@ -73,18 +73,19 @@ Current signatures are good, but consider:
 | 7 | TOML parser integration | Integrate `tomlc99` or similar library | Medium | Sidati |
 | 8 | Parse basic manifest | Read and parse simple `genc.toml` files | Medium | Aymane |
 
+---
 ### Phase 2: Core Build System
 
 | Priority | Task | Description | Estimated Effort |
 |----------|------|-------------|------------------|
-| 9 | Define build configuration | Add compiler flags, output paths to manifest | Small |
-| 10 | Source file discovery | Implement `walk_dir` to find `.c` files | Medium |
-| 11 | Simple compilation | Compile single-file projects (no deps) | Medium |
-| 12 | Linking | Link object files into executable | Medium |
-| 13 | `genc build` command | Implement full build workflow | Medium |
-| 14 | Error handling | Implement proper error reporting and propagation | Medium |
-| 15 | Build output directory | Create `target/debug` and `target/release` | Small |
+| 9 | Define build configuration | Add compiler flags, output paths to manifest | Small | Sidati |
+| 10 | Source file discovery | Implement `walk_dir` to find `.c` files | Medium | Aymane |
+| 11 | Simple compilation | Compile single-file projects (no deps) | Medium | Sidati |
+| 12 | Linking | Link object files into executable | Medium | Sidati |
+| 13 | `genc build` command | Implement full build workflow | Medium | Aymane |
+| 14 | Build output directory | Create `bin/debug` and `target/release` | Small | Aymane |
 
+---
 ### Phase 3: Basic Dependency Support
 
 | Priority | Task | Description | Estimated Effort |
