@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include "../include/file_system.h"
 #include "../include/errors.h"
 #include <stdbool.h>
@@ -5,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <unistd.h>
 
 File read_file(ErrorCollector* errors, const char* path)
 {
@@ -66,6 +68,30 @@ void write_to_file(ErrorCollector* errors, const char* path, const char* content
     fclose(f);
 }
 
+bool file_exists(const char* path)
+{
+    struct stat status;
+    return stat(path, &status) == 0 && S_ISREG(status.st_mode);
+}
+
+char* get_current_dirname(void)
+{
+    char* full_path = get_current_dir_name();
+    if (!full_path)
+        return NULL;
+
+    char* dir_name = strrchr(full_path, '/');
+    char* result;
+
+    if (dir_name)
+        result = strdup(dir_name + 1);
+    else
+        result = strdup(full_path);
+
+    free(full_path);
+    return result;
+}
+
 static bool dir_exists(const char* path)
 {
     struct stat status;
@@ -82,6 +108,43 @@ void create_dir(ErrorCollector* errors, const char* path)
         add_error(errors, FS_ERR_CANNOT_CREATE_DIR, "Failed to create directory", path);
         report_and_exit(errors);
     }
+}
+
+/**
+ * @Author: sidati NOUHI
+ * @Date: 12/01/2026
+ * @Does: Replaces all occurrences of placeholder -> of the form: {{placeholder}}. with actual attribute
+ */
+char* replace_placeholder(const char* template, const char* attribute, const char* placeholder)
+{
+    size_t tlen = strlen(template);
+    size_t plen = strlen(placeholder);
+    size_t nlen = strlen(attribute);
+
+    // Estimate max size
+    size_t count = 0;
+    for (const char* p = template; (p = strstr(p, placeholder)); p += plen)
+        count++;
+    size_t newlen = tlen + count * (nlen - plen) + 1;
+
+    char* result = malloc(newlen);
+    if (!result)
+        exit(1);
+
+    const char* src = template;
+    char*       dst = result;
+    while ((src = strstr(src, placeholder)))
+    {
+        size_t prefix = src - template;
+        strncpy(dst, template, prefix);
+        dst += prefix;
+        strcpy(dst, attribute);
+        dst += nlen;
+        src += plen;
+        template = src;
+    }
+    strcpy(dst, template);
+    return result;
 }
 
 void walk_dir(ErrorCollector* errors, char* path)

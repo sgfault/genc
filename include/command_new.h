@@ -19,8 +19,6 @@ inline CommandResult command_new()
  * @param attribute: the value to use to replace the placeholder (could be name, author or any other attribute)
  * @param placeholder: the placeholder used in the template eg: {{project_name}}
  */
-void init_project(ErrorCollector* collector, const char* name);
-
-char* replace_placeholder(const char* _template, const char* attribute, const char* placeholder);
+void create_new_project(ErrorCollector* collector, const char* name);
 
 #endif  // !GENC_COMMAND_NEW_H

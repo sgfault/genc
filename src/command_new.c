@@ -11,46 +11,9 @@
 /**
  * @Author: sidati NOUHI
  * @Date: 12/01/2026
- * @Does: Replaces all occurrences of placeholder -> of the form: {{placeholder}}. with actual attribute
- */
-char* replace_placeholder(const char* template, const char* attribute, const char* placeholder)
-{
-    size_t tlen = strlen(template);
-    size_t plen = strlen(placeholder);
-    size_t nlen = strlen(attribute);
-
-    // Estimate max size
-    size_t count = 0;
-    for (const char* p = template; (p = strstr(p, placeholder)); p += plen)
-        count++;
-    size_t newlen = tlen + count * (nlen - plen) + 1;
-
-    char* result = malloc(newlen);
-    if (!result)
-        exit(1);
-
-    const char* src = template;
-    char*       dst = result;
-    while ((src = strstr(src, placeholder)))
-    {
-        size_t prefix = src - template;
-        strncpy(dst, template, prefix);
-        dst += prefix;
-        strcpy(dst, attribute);
-        dst += nlen;
-        src += plen;
-        template = src;
-    }
-    strcpy(dst, template);
-    return result;
-}
-
-/**
- * @Author: sidati NOUHI
- * @Date: 12/01/2026
  * Initializes the project with the standard directories src/ include/ and files (formatter, main, readme, gitignore and genc.toml).
  */
-void init_project(ErrorCollector* errorsCollector, const char* name)
+void create_new_project(ErrorCollector* errorsCollector, const char* name)
 {
     create_dir(errorsCollector, name);
     char path[256];
