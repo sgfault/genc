@@ -2,6 +2,7 @@
 #define GENC_FILE_SYSTEM_H
 
 #include "../include/errors.h"
+#include <stdbool.h>
 
 /* Represents a file read into memory */
 typedef struct
@@ -32,6 +33,28 @@ void create_file(ErrorCollector* errors, const char* path);
  * @param content: content to write
  */
 void write_to_file(ErrorCollector* errors, const char* path, const char* content);
+
+/**
+ * Check if a file exists
+ * @param path: path to file
+ * @return true if file exists, false otherwise
+ */
+bool file_exists(const char* path);
+
+/**
+ * Get the basename (directory name) of the current working directory
+ * @return newly allocated string with the basename (caller must free), NULL on error
+ */
+char* get_current_dirname(void);
+
+/**
+ * Replace all occurrences of placeholder with attribute in template
+ * @param template: template string
+ * @param attribute: value to replace placeholder with
+ * @param placeholder: placeholder to search for (e.g., "{{project_name}}")
+ * @return newly allocated string with replacements (caller must free)
+ */
+char* replace_placeholder(const char* _template, const char* attribute, const char* placeholder);
 
 /**
  * Create a directory (does nothing if already exists)

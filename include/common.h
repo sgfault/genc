@@ -2,6 +2,7 @@
 #define GENC_COMMON_H
 
 #include "command.h"
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 
@@ -17,5 +18,12 @@ typedef struct
 } Str;
 
 Str new_string(const char* chars);
+
+/**
+ * Prompt user with a yes/no question
+ * @param prompt: the question to ask the user
+ * @return true if user answered yes (y/Y), false otherwise
+ */
+bool prompt_yes_no(const char* prompt);
 
 #endif  // !GENC_COMMON_H
